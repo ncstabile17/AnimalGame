@@ -17,6 +17,34 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
+//    public class OverlapCheck implements Runnable {
+//
+//        public void run() {
+//            System.out.print("Thread started");
+//            while(!(animation.hasEnded())) {
+//               // System.out.print("OH NOOOOOOO");
+//                    checkOverlap();
+//                if (Rect.intersects(otherViewRect5, myViewRect)) {
+//                    System.out.println("THEY'VE OVERLAPPEDDDDD");
+//                }
+//
+//                if (Rect.intersects(myViewRect, otherViewRect1) || Rect.intersects(myViewRect, otherViewRect2) || Rect.intersects(myViewRect, otherViewRect3) ||
+//                        Rect.intersects(myViewRect, otherViewRect4) || Rect.intersects(myViewRect, otherViewRect5) || Rect.intersects(myViewRect, otherViewRect6) || Rect.intersects(myViewRect, otherViewRect7)) {
+//
+//                    System.out.println("They've Overlatpped");
+//
+//                }
+//            }
+//        }
+//
+//        public void checkOverlap() {
+//            if (Rect.intersects(otherViewRect5, myViewRect)) {
+//                System.out.println("THEY'VE OVERLAPPEDDDDD");
+//            }
+//        }
+//    }
+
+
     ImageView pos1, pos2, pos3, pos4, pos5, pos6, pos7, playerImage;
     ImageButton leftButton, rightButton;
     ArrayList<ImageView> pos = new ArrayList<>();
@@ -94,17 +122,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void start() {
 
-
-
         long offset = 1000;
         int bool = 0;
     int i = 0;
         while (i<pos.size()) {
             Random rand = new Random();
-            ImageView curView = pos.get(i);
+            final ImageView curView = pos.get(i);
             curView.setImageResource(R.drawable.raindrop);
             animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.myanim);
-
 
             animation.setStartOffset(offset);
             //animation.setRepeatCount(Animation.INFINITE);
@@ -117,29 +142,35 @@ public class MainActivity extends AppCompatActivity {
         }
 
         animation.setAnimationListener(new Animation.AnimationListener() {
-            public void onAnimationStart(Animation anim) {
-              //  overlap(animation);
-                while(!(animation.hasEnded())) {
-                   // Toast.makeText(getApplicationContext(), "look it's toast", Toast.LENGTH_LONG).show();
-
-//                    if (Rect.intersects(myViewRect, otherViewRect1) || Rect.intersects(myViewRect, otherViewRect2) || Rect.intersects(myViewRect, otherViewRect3) ||
-//                            Rect.intersects(myViewRect, otherViewRect4) || Rect.intersects(myViewRect, otherViewRect5) || Rect.intersects(myViewRect, otherViewRect6) || Rect.intersects(myViewRect, otherViewRect7)) {
-//
-//                        // animation.cancel();
-//                        dialog();
-//                        Toast.makeText(getApplicationContext(), "look it's toast", Toast.LENGTH_LONG).show();
-//                        moveLeft();
-//                    }
-               }
+            @Override
+            public void onAnimationStart(Animation animation) {
 
             }
-            public void onAnimationRepeat(Animation anim) {
 
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                System.out.println("In listener" + pos5.getLeft() + " " + playerImage.getLeft());
+                if ((pos5.getLeft()<playerImage.getLeft()) && (pos5.getRight() > playerImage.getLeft())) {
+                    System.out.println("THEY're VOVOEKR:A");
+                }
+                else if ((pos5.getLeft()<playerImage.getRight()) && (pos5.getRight() > playerImage.getRight())) {
+                    System.out.println("THEY're VOVOEKR:A");
+                }
+
+                else if ((pos5.getLeft()==playerImage.getRight()) && (pos5.getRight() == playerImage.getRight())) {
+                    System.out.println("THEY're VOVOEKR:A");
+                }
             }
-            public void onAnimationEnd(Animation anim) {
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
 
             }
         });
+
+//        OverlapCheck p = new OverlapCheck();
+//        new Thread(p).start();
+
 
 
     }//start()
@@ -166,15 +197,9 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
 
-//            alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-//                public void onClick(DialogInterface dialog, int which) {
-//                    finish();
-//                }
-//            });
 
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-       // }
     }
 
     public void overlap(Animation animation) {
